@@ -159,18 +159,10 @@ class P2PChatApp {
 
     checkUserSetup() {
         const savedData = this.loadUserData();
-        
-        if (savedData.peerId && savedData.username) {
-            this.username = savedData.username;
-            this.peerId = savedData.peerId;
-            this.initializePeer(this.peerId);
-            this.appendSystemMessage(`Welcome back, ${this.username}!`);
-        } else {
-            // Auto-fill setup form with saved data if available
-            this.usernameInput.value = savedData.username || '';
-            this.peerIdInput.value = savedData.peerId || '';
-            this.setupModal.style.display = 'flex';
-        }
+        // Auto-fill setup form with saved data if available, or empty strings
+        this.usernameInput.value = savedData.username || '';
+        this.peerIdInput.value = savedData.peerId || '';
+        this.setupModal.style.display = 'flex';
     }
 
     initializePeer(customId) {
@@ -301,7 +293,7 @@ class P2PChatApp {
             });
 
             this.conn.on('data', (data) => {
-            this.handleIncomingData(data);
+                this.handleIncomingData(data);
             });
 
             this.conn.on('close', () => {
