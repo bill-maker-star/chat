@@ -37,6 +37,7 @@ class P2PChatApp {
         this.connectionStatus = document.getElementById('connectionStatus');
         this.notificationCenter = document.getElementById('notificationCenter');
         this.usernameInput = document.getElementById('usernameInput');
+        this.mobileWarning = document.getElementById('mobileWarning');
 
         // App State
         this.peer = null;
@@ -66,6 +67,7 @@ class P2PChatApp {
         this.initEventListeners();
         this.loadContacts();
         this.checkUserSetup();
+        this.checkMobileDevice();
     }
 
     initTheme() {
@@ -142,6 +144,19 @@ class P2PChatApp {
 
         // Window events
         window.addEventListener('beforeunload', () => this.cleanup());
+    }
+
+    checkMobileDevice() {
+        const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+        const isScreenShareSupported = !!(navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia);
+        if (isMobile && !isScreenShareSupported) {
+            if (this.mobileWarning) {
+                this.mobileWarning.style.display = 'block';
+            }
+            this.screenShareButton.disabled = true;
+            this.screenShareButton.title = 'Screen sharing not supported on this device';
+            this.screenShareButton.setAttribute('aria-label', 'Screen sharing not supported on this device');
+        }
     }
 
     checkUserSetup() {
@@ -429,6 +444,14 @@ class P2PChatApp {
 
     async toggleScreenShare() {
         try {
+            // Detect if the device is mobile and if screen sharing is supported
+            const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+            const isScreenShareSupported = !!(navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia);
+            if (isMobile && !isScreenShareSupported) {
+                this.showNotification('Screen sharing is not supported on this mobile browser. Try using a desktop browser or a native app.', 'warning');
+                return;
+            }
+
             if (this.isScreenSharing) {
                 const stream = await navigator.mediaDevices.getUserMedia({ 
                     video: true, 
@@ -458,7 +481,15 @@ class P2PChatApp {
             }
         } catch (error) {
             console.error('Screen share error:', error);
-            this.showNotification('Screen sharing failed or was canceled', 'error');
+            let errorMessage = 'Screen sharing failed. ';
+            if (error.name === 'NotAllowedError') {
+                errorMessage += 'Please grant screen sharing permissions.';
+            } else if (error.name === 'NotSupportedError') {
+                errorMessage += 'Screen sharing is not supported in this browser.';
+            } else {
+                errorMessage += 'Try again or use a different browser.';
+            }
+            this.showNotification(errorMessage, 'error');
         }
     }
 
