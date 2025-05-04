@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ConnectMe - P2P Chat & Video</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <h1><i class="fas fa-user-friends"></i> ConnectMe</h1>
+            <p class="connection-status" id="peerIdDisplay">Your ID: Generating...</p>
+        </header>
+
+        <main class="app-main">
+            <section class="connection-panel">
+                <div class="input-group">
+                    <input type="text" id="peerIdInput" placeholder="Enter friend's ID">
+                    <button id="connectButton" class="btn-primary">
+                        <i class="fas fa-link"></i> Connect
+                    </button>
+                    <button id="disconnectButton" class="btn-secondary">
+                        <i class="fas fa-unlink"></i> Disconnect
+                    </button>
+                </div>
+            </section>
+
+            <section class="chat-section">
+                <div class="chat-container" id="chatBox"></div>
+                <div class="message-input">
+                    <input type="text" id="messageInput" placeholder="Type your message...">
+                    <button id="sendButton" class="btn-primary">
+                        <i class="fas fa-paper-plane"></i> Send
+                    </button>
+                </div>
+            </section>
+
+            <section class="media-controls">
+                <h3><i class="fas fa-video"></i> Video Call</h3>
+                <div class="button-group">
+                    <button id="callButton" class="btn-success">
+                        <i class="fas fa-video"></i> Start Call
+                    </button>
+                    <button id="endCallButton" class="btn-danger">
+                        <i class="fas fa-phone-slash"></i> End Call
+                    </button>
+                    <button id="muteButton" class="btn-warning">
+                        <i class="fas fa-microphone"></i> Mute
+                    </button>
+                    <button id="pauseVideoButton" class="btn-warning">
+                        <i class="fas fa-video-slash"></i> Pause Video
+                    </button>
+                </div>
+            </section>
+
+            <section class="video-container" id="videoContainer">
+                <div class="video-box">
+                    <h4>You</h4>
+                    <video id="localVideo" autoplay muted></video>
+                </div>
+                <div class="video-box">
+                    <h4>Friend</h4>
+                    <video id="remoteVideo" autoplay></video>
+                </div>
+            </section>
+
+            <section class="share-section">
+                <h3><i class="fas fa-share-alt"></i> Share</h3>
+                <div class="button-group">
+                    <button id="fileShareButton" class="btn-info">
+                        <i class="fas fa-file"></i> File
+                    </button>
+                    <button id="photoShareButton" class="btn-purple">
+                        <i class="fas fa-image"></i> Photo
+                    </button>
+                    <button id="locationShareButton" class="btn-orange">
+                        <i class="fas fa-map-marker-alt"></i> Location
+                    </button>
+                    <input type="file" id="fileInput" style="display: none;">
+                    <input type="file" id="photoInput" accept="image/*" style="display: none;">
+                </div>
+                <div id="sharedContentContainer"></div>
+            </section>
+
+            <section class="utility-controls">
+                <div class="button-group">
+                    <button id="clearChatButton" class="btn-gray">
+                        <i class="fas fa-trash"></i> Clear Chat
+                    </button>
+                    <button id="clearDataButton" class="btn-danger">
+                        <i class="fas fa-eraser"></i> Reset
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <footer class="app-footer">
+            <p>Peer-to-Peer connection powered by PeerJS</p>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
