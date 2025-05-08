@@ -332,6 +332,13 @@ video {
     max-height: 200px;
     border-radius: var(--border-radius);
     border: 1px solid #d1d5db;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.shared-photo:hover {
+    opacity: 0.9;
+    transform: scale(1.02);
 }
 
 #sharedContentContainer {
@@ -393,6 +400,46 @@ video {
 
 @keyframes spin {
     to { transform: rotate(360deg); }
+}
+
+/* Modal Styles */
+.image-modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.image-modal.active {
+    display: flex;
+}
+
+.modal-image {
+    max-width: 90%;
+    max-height: 90vh;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+
+.modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: var(--white);
+    font-size: 2rem;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.modal-close:hover {
+    color: var(--danger);
 }
 
 /* Mobile Styles */
