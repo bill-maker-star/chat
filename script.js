@@ -26,7 +26,10 @@ const elements = {
     sharedContentContainer: document.getElementById('sharedContentContainer'),
     connectionInputGroup: document.getElementById('connectionInputGroup'),
     menuToggle: document.getElementById('menuToggle'),
-    sidebar: document.getElementById('sidebar')
+    sidebar: document.getElementById('sidebar'),
+    imageModal: document.getElementById('imageModal'),
+    modalImage: document.getElementById('modalImage'),
+    modalClose: document.getElementById('modalClose')
 };
 
 // Application State
@@ -141,6 +144,10 @@ const ui = {
         img.src = data;
         img.alt = 'Shared photo';
         img.className = 'shared-photo';
+        img.addEventListener('click', () => {
+            elements.modalImage.src = data;
+            elements.imageModal.classList.add('active');
+        });
         
         container.appendChild(img);
         elements.sharedContentContainer.appendChild(container);
@@ -173,6 +180,11 @@ const ui = {
 
     toggleSidebar: () => {
         elements.sidebar.classList.toggle('active');
+    },
+
+    closeModal: () => {
+        elements.imageModal.classList.remove('active');
+        elements.modalImage.src = '';
     }
 };
 
@@ -519,6 +531,14 @@ const initApp = () => {
             if (!elements.sidebar.contains(e.target) && !elements.menuToggle.contains(e.target)) {
                 elements.sidebar.classList.remove('active');
             }
+        }
+    });
+
+    // Modal close event
+    elements.modalClose.addEventListener('click', ui.closeModal);
+    elements.imageModal.addEventListener('click', (e) => {
+        if (e.target === elements.imageModal) {
+            ui.closeModal();
         }
     });
 };
